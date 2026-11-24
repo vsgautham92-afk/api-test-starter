@@ -21,12 +21,14 @@ Create a minimal Python API test framework in this folder:
 - .github/workflows/api-tests.yml: on every pull request, install, run smoke
   tests first, then the full suite, and upload the reports
 - FINDINGS.md with sections: product bugs, spec questions, test limitations
+- SPEC_NOTES.md with, per endpoint: who can call it, what can I send, what can go
+  wrong, what comes back, what must always be true; plus a "what's unclear" section
 Rule: tests must assert what the spec says, never what the API returns.
 Then run the smoke test.
 ```
 
 **Short version (if you have nothing to copy from):**
-"Create a pytest API test framework: an API client with auth, failures that show a curl repro, config from environment variables, a valid-body fixture, test markers, a GitHub Actions CI file, and a FINDINGS.md."
+"Create a pytest API test framework: an API client with auth, failures that show a curl repro, config from environment variables, a valid-body fixture, test markers, a GitHub Actions CI file, a FINDINGS.md and a SPEC_NOTES.md."
 
 ### 1. Spec → test matrix (about minute 3, no code yet)
 ```
