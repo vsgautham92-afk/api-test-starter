@@ -1,0 +1,45 @@
+name: API tests
+
+# Runs on every pull request, on pushes to main, nightly, and on demand.
+on:
+  pull_request:            # every change
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 5 * * *"     # nightly, e.g. against staging
+  workflow_dispatch:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    env:
+      # Point at the environment under test (set a repository variable called BASE_URL).
+      BASE_URL: ${{ vars.BASE_URL || 'http://localhost:8000' }}
+      SPEC_PATH: ${{ vars.SPEC_PATH }}
+      API_TOKEN: ${{ secrets.API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # If the API runs in this repo, start it here before the tests, e.g.
+      # - run: docker compose up -d && ./scripts/wait-for-health.sh
+
+      - name: Smoke tests (fail fast)
+        run: pytest -m smoke
+
+      - name: Full suite
+        run: pytest
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-reports
+          path: reports/
