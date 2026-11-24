@@ -6,6 +6,28 @@ Tip: save this file somewhere you can open on the Ohme laptop: it's in your star
 
 ---
 
+### 0. Build the skeleton from scratch (if you can't use this repo)
+```
+Create a minimal Python API test framework in this folder:
+- requirements.txt: pytest, requests, jsonschema, pytest-html
+- framework/api_client.py: ApiClient with base URL, optional bearer token,
+  and an auth argument per call (auth=False for no header)
+- framework/assertions.py: assert_status(resp, code) and explain(resp) that
+  print the response body and a curl command to reproduce it
+- conftest.py: an `api` fixture using env vars BASE_URL and API_TOKEN, and a
+  `valid_body` fixture that returns a valid request body with one field overridden
+- pytest.ini with markers: smoke, contract, negative, boundary, security, integration
+- tests/test_smoke.py: checks the API is reachable
+- .github/workflows/api-tests.yml: on every pull request, install, run smoke
+  tests first, then the full suite, and upload the reports
+- FINDINGS.md with sections: product bugs, spec questions, test limitations
+Rule: tests must assert what the spec says, never what the API returns.
+Then run the smoke test.
+```
+
+**Short version (if you have nothing to copy from):**
+"Create a pytest API test framework: an API client with auth, failures that show a curl repro, config from environment variables, a valid-body fixture, test markers, a GitHub Actions CI file, and a FINDINGS.md."
+
 ### 1. Spec → test matrix (about minute 3, no code yet)
 ```
 Read <SPEC file>. Act as a senior QA engineer. Produce a table of test cases per endpoint:
