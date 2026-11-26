@@ -6,6 +6,20 @@ Tip: save this file somewhere you can open on the Ohme laptop: it's in your star
 
 ---
 
+## Short versions (easy to remember: Plan → Write → Review → Run → Report)
+
+| Step | Type this |
+|---|---|
+| 1. Plan | `Read <spec>. Make a test plan table, about 15 rows per endpoint, P1 first, top 5 spec questions. No code yet.` |
+| 2. Write | `Fix: <what's wrong>. Then write P1 tests for <endpoint>, about 10, use parametrize.` |
+| 3. Review | `Review your tests. Which could pass even if the API is wrong?` |
+| 4. Run | `Run the tests. Sort failures into product bug, test bug or spec question. Don't change tests to pass.` |
+| 5. Report | `Fill FINDINGS.md from the results, most serious bug first.` |
+
+Shortcut: `Read 2-PROMPTS.md and do prompt 1 using <spec file>. The API is at <URL>, token <token>.` Then "now do prompt 2", and so on.
+
+---
+
 ### 0. Build the skeleton from scratch (if you can't use this repo)
 ```
 Create a minimal Python API test framework in this folder:
@@ -36,14 +50,16 @@ Read <SPEC file>. Act as a senior QA engineer. Produce a table of test cases per
 priority (P1-P3 by customer impact) | layer (contract, business rule, boundary, negative,
 missing field, auth, cross-endpoint, data sanity) | input | expected status + error code |
 the spec line it comes from.
+Keep it short: about 15 rows per endpoint, P1 first. Only test inputs we can send;
+check response fields in the reply.
 Only expected results the spec states. Anything the spec doesn't say goes in a separate
-"Spec questions" list. Include min, min-1, max, max+1 and the equal case for every > or <
-rule. Include at least one test where the two endpoints must agree. No code yet.
+"Spec questions" list (top 5 only). Include min, min-1, max, max+1 and the equal case for
+every > or < rule. Include at least one test where the two endpoints must agree. No code yet.
 ```
 
 ### 2. Matrix → pytest (one endpoint at a time)
 ```
-Write pytest tests for the P1 and P2 rows for <METHOD /path> in tests/test_<name>.py,
+Write pytest tests for the P1 rows for <METHOD /path> (about 10 test functions) in tests/test_<name>.py,
 following CLAUDE.md and tests/endpoint_template.py. Fill VALID_BODY in conftest.py from the
 spec. Use parametrize for boundaries and invalid values, schema checks for the contract, and
 one rule per test. Don't assert anything the spec doesn't state. Don't run them yet.
