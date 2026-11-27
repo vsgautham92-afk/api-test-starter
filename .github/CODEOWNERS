@@ -1,0 +1,10 @@
+# Who must approve changes to which files.
+# With branch protection "Require review from Code Owners" switched on,
+# a pull request touching these paths can't merge until the owner approves,
+# including pull requests opened by an AI agent.
+# At Ohme, replace @vsgautham92-afk with the QA team, e.g. @ohme/qa
+
+/tests/                    @vsgautham92-afk
+/framework/                @vsgautham92-afk
+/CLAUDE.md                 @vsgautham92-afk
+/.github/workflows/        @vsgautham92-afk
