@@ -6,6 +6,35 @@ Tip: save this file somewhere you can open on the Ohme laptop: it's in your star
 
 ---
 
+## 🚨 Emergency: start from nothing (one prompt, about 30 minutes to the first test)
+
+Use this if you can't clone the repo, or you've forgotten everything. Fill in the 3 blanks.
+
+```
+I have 30 minutes. Spec: <SPEC FILE>. API: <URL>. Token: <TOKEN or "none">.
+Do these steps in order, briefly:
+1. Build a minimal Python pytest API test framework in this folder:
+   - requirements.txt: pytest, requests, jsonschema, pytest-html
+   - framework/api_client.py: base URL and bearer token from env vars BASE_URL and API_TOKEN; per-call auth option (no header, or a wrong token)
+   - framework/assertions.py: assert_status(resp, code) and explain(resp) that prints the body and a curl command to reproduce
+   - conftest.py: an `api` fixture and a `valid_body` fixture (a valid request body; tests override one field)
+   - pytest.ini with markers: smoke, contract, negative, boundary, security, integration
+   - .github/workflows/api-tests.yml: on every pull request, install, run smoke tests first, then the full suite, upload reports
+   - CLAUDE.md with rules: the spec is the source of truth; assert what the spec says, never what the API returns; never edit a test to make it pass; test min, max, min-1, max+1 and the equal case; watch kW vs kWh, pence vs pounds, UTC with Z
+   - FINDINGS.md with sections: product bugs, spec questions, test limitations
+2. Install the requirements and set BASE_URL and API_TOKEN for this session.
+3. Read the spec. Give me a short test plan: about 15 rows per endpoint, P1 first, top 5 spec questions. Only inputs we can send. No code yet.
+4. Write ONE happy-path test for the first endpoint and run it. Show me the result.
+Then stop and wait for me.
+```
+
+**Short version (if you can't copy anything):**
+"Build a pytest API test framework here from scratch: client with auth, curl repro on failure, env config, markers, GitHub Actions, CLAUDE.md rules, FINDINGS.md. Then read <spec>, give me a short test plan, write one test and run it. API <URL>, token <token>."
+
+After that, carry on with the short versions below: "now write P1 tests for <endpoint>…".
+
+---
+
 ## Short versions (easy to remember: Plan → Write → Review → Run → Report)
 
 | Step | Type this |
