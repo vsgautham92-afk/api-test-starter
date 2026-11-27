@@ -11,10 +11,13 @@ on:
 
 jobs:
   api-tests:
+    # Only runs once a real API address is set (repo Settings > Variables > BASE_URL),
+    # so the template repo doesn't fail and email you on every push.
+    if: ${{ vars.BASE_URL != '' }}
     runs-on: ubuntu-latest
     env:
       # Point at the environment under test (set a repository variable called BASE_URL).
-      BASE_URL: ${{ vars.BASE_URL || 'http://localhost:8000' }}
+      BASE_URL: ${{ vars.BASE_URL }}
       SPEC_PATH: ${{ vars.SPEC_PATH }}
       API_TOKEN: ${{ secrets.API_TOKEN }}
     steps:
